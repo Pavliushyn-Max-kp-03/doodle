@@ -70,6 +70,49 @@ document.addEventListener('DOMContentLoaded', () => {
       doodler.style.left = doodlerLeftSpace + 'px'
       doodler.style.bottom = doodlerBottomSpace + 'px'
     }
+    function fall() {
+      isJumping = false
+        clearInterval(upTimerId)
+        downTimerId = setInterval(function () {
+          doodlerBottomSpace -= 5
+          doodler.style.bottom = doodlerBottomSpace + 'px'
+          if (doodlerBottomSpace <= 0) {
+            gameOver()
+          }
+          platforms.forEach(platform => {
+            if (
+              (doodlerBottomSpace >= platform.bottom) &&
+              (doodlerBottomSpace <= (platform.bottom + 15)) &&
+              ((doodlerLeftSpace + 60) >= platform.left) && 
+              (doodlerLeftSpace <= (platform.left + 85)) &&
+              !isJumping
+              ) {
+                console.log('tick')
+                startPoint = doodlerBottomSpace
+                jump()
+                console.log('start', startPoint)
+                isJumping = true
+              }
+          })
+    
+        },20)
+    }
+    function jump() {
+      clearInterval(downTimerId)
+      isJumping = true
+      upTimerId = setInterval(function () {
+        console.log(startPoint)
+        console.log('1', doodlerBottomSpace)
+        doodlerBottomSpace += 20
+        doodler.style.bottom = doodlerBottomSpace + 'px'
+        console.log('2',doodlerBottomSpace)
+        console.log('s',startPoint)
+        if (doodlerBottomSpace > (startPoint + 200)) {
+          fall()
+          isJumping = false
+        }
+      },30)
+    }
   
     function start() {
       if (!isGameOver) {
