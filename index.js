@@ -113,6 +113,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       },30)
     }
+    function moveLeft() {
+      if (isGoingRight) {
+          clearInterval(rightTimerId)
+          isGoingRight = false
+      }
+      isGoingLeft = true
+      leftTimerId = setInterval(function () {
+          if (doodlerLeftSpace >= 0) {
+            console.log('going left')
+            doodlerLeftSpace -=5
+             doodler.style.left = doodlerLeftSpace + 'px'
+          } else moveRight()
+      },20)
+    }
+  
+    function moveRight() {
+      if (isGoingLeft) {
+          clearInterval(leftTimerId)
+          isGoingLeft = false
+      }
+      isGoingRight = true
+      rightTimerId = setInterval(function () {
+        if (doodlerLeftSpace <= 313) {
+          console.log('going right')
+          doodlerLeftSpace +=5
+          doodler.style.left = doodlerLeftSpace + 'px'
+        } else moveLeft()
+      },20)
+    }
+    
+    function moveStraight() {
+      isGoingLeft = false
+      isGoingRight = false
+      clearInterval(leftTimerId)
+      clearInterval(rightTimerId)
+    }
   
     function start() {
       if (!isGameOver) {
